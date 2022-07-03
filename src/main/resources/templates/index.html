@@ -1,17 +1,305 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
-    <title>Spring Security Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <div>
+        <nav class="navbar sticky-top navbar-dark bg-dark">
+            <div class="container-fluid">
+                <h5 class="text-white"><span th:text="${currentUser.getName()}"></span> with roles: <span
+                        th:each="role:${currentUser.getRoles()}" th:text="${role.getRole()+' '}"></span></h5>
+                <ul class="navbar-nav">
+                    <a class="nav-link" aria-current="page" href="javascript: document.logoutForm.submit()">Logout</a>
+                    <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
+                        <input hidden type="submit" value="Sign Out"/>
+                    </form>
+                </ul>
+            </div>
+        </nav>
+    </div>
 </head>
-<meta http-equiv="refresh" content="0; url=/login" />
-<body>
-<h1>Welcome to Index PAGE!</h1>
-<div>
-    <form action="/user" method="post">
-        <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
-        <input type="submit" value="Sign"/>
-    </form>
-</div>
 
+<!-- Custom css that makes this example work like it does: -->
+<style type="text/css">
+    .row {
+        background: white;
+    }
+
+    .col-md-2 {
+        background: white;
+        height: 987px;
+    }
+
+    .table {
+        width: 100%;
+        background: white;
+    }
+
+    .col-md-8 {
+        position: relative;
+        top: 50px;
+        left: 50px;
+        height: 100%;
+    }
+
+    #newUser {
+        background: white;
+    }
+
+    #tabs-397422 {
+        width: 120%;
+    }
+
+    #test {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    #btnCreate {
+        margin: auto;
+        display: block;
+        width: 10%;
+    }
+
+    body {
+        background: whitesmoke;
+    }
+
+    #userdiv {
+        display: none;
+    }
+
+</style>
+
+<div class="container-fluid">
+    <div class="row" th:style="'background: whitesmoke'">
+
+        <div class="col-md-2" id="navBarUA">
+
+
+        </div>
+
+        <div class="col-md-8" id="admindiv">
+            <div class="tabbable" id="tabs-397422">
+                <h2 th:style="'background: whitesmoke'">Admin panel</h2>
+
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#userList" data-toggle="tab">User table</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#tab2" data-toggle="tab">New User</a>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <div class="tab-pane active" id="userList">
+                        <table class="table" id="listUsers">
+                            <h4 th:style="'background:whitesmoke'">All users</h4>
+                            <thead>
+                            <tr>
+                                <th scope="col">Id</th>
+                                <th scope="col">First name</th>
+                                <th scope="col">Last name</th>
+                                <th scope="col">Age</th>
+                                <th scope="col">Role</th>
+                                <th scope="col">Edit</th>
+                                <th scope="col">Delete</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+
+                            <div class="modal" tabindex="-1" id="userEdit1">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="modalVerticallyCenteredLabel">Edit user</h5>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form>
+
+
+                                                <label class="col-form-label" for="id">ID</label>
+                                                <input class="form-control" readonly type="number" id="id"
+                                                       placeholder="ID">
+                                                <br/>
+                                                <label class="col-form-label" for="firstName1">First name</label>
+                                                <input class="form-control" type="text" id="firstName1"
+                                                       placeholder="First Name">
+                                                <br/>
+                                                <label class="col-form-label" for="lastName1">Last name</label>
+                                                <input class="form-control" type="text" id="lastName1"
+                                                       placeholder="Last Name">
+                                                <br/>
+                                                <label class="col-form-label" for="age1">Age</label>
+                                                <input class="form-control" type="text" id="age1" placeholder="Age">
+                                                <br/>
+                                                <label class="col-form-label" for="age1">Username</label>
+                                                <input class="form-control" type="text" id="username1"
+                                                       placeholder="Age">
+                                                <br/>
+                                                <label class="col-form-label" for="age1">Password</label>
+                                                <input class="form-control" type="text" id="password1"
+                                                       placeholder="Age">
+                                                <br/>
+                                                <div class="form-group">
+                                                    <label class="col-form-label" for="listRole1">Role</label>
+                                                    <select class="form-control" id="listRole1" name="listRole1">
+                                                        <option value="2">User</option>
+                                                        <option value="1">Admin</option>
+                                                    </select>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" id="closeBtn" class="btn btn-secondary"
+                                                            data-dismiss="modal">Close
+                                                    </button>
+                                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                                </div>
+
+
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="modal" tabindex="-1" id="deleteUser">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="modalVerticallyCenteredLabel">Delete user</h5>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form>
+
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                    <div class="tab-pane" id="tab2">
+                        <h4 th:style="'background:whitesmoke'">Add new user</h4>
+                        <form id="newUser" action="#" method="post">
+                            <div class="col-md-6 mb-3" id="test">
+                                <label class="col-form-label" for="firstName">First name</label>
+                                <input type="text" class="form-control" id="firstName" aria-describedby="firstName"
+                                       placeholder="Enter first name">
+                            </div>
+                            <div class="col-md-6 mb-3" id="test">
+                                <label class="col-form-label" for="lastName">Last name</label>
+                                <input type="text" class="form-control" id="lastName" aria-describedby="lastName"
+                                       placeholder="Enter last name">
+                            </div>
+                            <div class="col-md-6 mb-3" id="test">
+                                <label class="col-form-label" for="age">Age</label>
+                                <input type="text" class="form-control" id="age" aria-describedby="age"
+                                       placeholder="Enter age">
+                            </div>
+                            <div class="col-md-6 mb-3" id="test">
+                                <label class="col-form-label" for="username">Username</label>
+                                <input type="text" class="form-control" id="username" aria-describedby="username"
+                                       placeholder="Enter username">
+                            </div>
+                            <div class="col-md-6 mb-3" id="test">
+                                <label class="col-form-label" for="password">Password</label>
+                                <input type="text" class="form-control" id="password" aria-describedby="password"
+                                       placeholder="Enter password">
+                            </div>
+                            <div class="col-md-6 mb-3" id="test">
+                                <label class="col-form-label" for="listRole">Role</label>
+                                <select class="form-control sm-5 mb-2" id="listRole" name="listRole">
+                                    <option value="2">User</option>
+                                    <option value="1">Admin</option>
+                                </select>
+                            </div>
+                            <div class="form-group mx-sm-5 mb-3">
+                                <button type="submit" onclick="document.location.reload()" class="btn-lg btn-success"
+                                        id="btnCreate">Create user
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+
+                </div>
+            </div> <!-- konec md8 -->
+
+        <div class="col-md-8" id="userdiv">
+
+            <div class="tabbable" id="tabs-397422">
+                <h2 th:style="'background: whitesmoke'">User</h2>
+                <ul class="nav nav-tabs">
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="list">
+                        <table class="table">
+                            <h4 th:style="'background:whitesmoke'">About user</h4>
+                            <thead>
+                            <tr>
+                                <th scope="col">Id</th>
+                                <th scope="col">First name</th>
+                                <th scope="col">Last name</th>
+                                <th scope="col">Age</th>
+                                <th scope="col">Username</th>
+                                <th scope="col">Role</th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+
+                            </tr>
+                            </tbody>
+                        </table >
+                    </div>
+                    </form>
+                </div>
+            </div>
+
+
+
+        </div>
+
+        </div>
+
+
+
+    </div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+<script type="text/javascript" src="../static/js/main.js" th:src="@{js/main.js}"></script>
+<script type="text/javascript" src="../static/js/userCreate.js" th:src="@{js/userCreate.js}"></script>
+<script type="text/javascript" src="../static/js/getAllUsers.js" th:src="@{js/getAllUsers.js}"></script>
+<script type="text/javascript" src="../static/js/editUser.js" th:src="@{js/editUser.js}"></script>
+<script type="text/javascript" src="../static/js/deleteUser.js" th:src="@{js/deleteUser.js}"></script>
+<script type="text/javascript" src="../static/js/checkCurrentUserRole.js" th:src="@{js/checkCurrentUserRole.js}"></script>
+<script type="text/javascript" src="../static/js/views.js" th:src="@{js/views.js}"></script>
 </body>
 </html>
