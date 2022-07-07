@@ -13,15 +13,8 @@ async function searchAndUpdate(userId) {
     document.getElementById('lastName1').value=currentUser.lastName
     document.getElementById('age1').value=currentUser.age
     document.getElementById('username1').value=currentUser.username
-    document.getElementById('password1').value=currentUser.password
-        // currentUser.name='fucked';
-        // currentRoleId=currentUser.roles.at(0).id
-        // await userFetch.findRoleById(2)
-        //     .then(resp=>resp.json())
-        //     .then(role=>newRole=role)
-        // currentUser.roles = newRole;
-        // console.log(currentRoleId)
-        // console.log(currentUser)
+    document.getElementById('password1').value='*****'
+   // document.getElementById('password1').value=currentUser.password
 }
 
 const editUser = document.querySelector('#userEdit1');
@@ -31,7 +24,9 @@ editUser.addEventListener('submit', async (e) => {
     currentUser.lastName=document.getElementById('lastName1').value
     currentUser.age=document.getElementById('age1').value
     currentUser.username=document.getElementById('username1').value
-    currentUser.password=document.getElementById('password1').value
+    if(document.getElementById('password1').value!=='*****') {
+        currentUser.password = document.getElementById('password1').value
+    }
     await userFetch.findRoleById(document.getElementById('listRole1').value)
         .then(resp=>resp.json())
         .then(role=>newRole=role)
@@ -39,7 +34,8 @@ editUser.addEventListener('submit', async (e) => {
     currentUser.roles.push(newRole)
     await userFetch.editUser(currentUserId,currentUser)
         .then(user=>console.log(user))
-    document.location.reload()
+    await getUsers();
+    closeModal();
 })
 
 

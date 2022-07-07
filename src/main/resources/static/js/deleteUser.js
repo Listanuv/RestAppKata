@@ -1,15 +1,14 @@
 let boy='';
 let user='';
 let temp = '';
-    const table = document.querySelector('#deleteUser form');
 
-
+const table = document.querySelector('#deleteUser form');
 const deleteUser = document.querySelector('#deleteUser');
+
 deleteUser.addEventListener('submit', async (e) => {
     e.preventDefault();
     await userFetch.deleteUser(boy)
-        .then(res => res.json())
-        .then(user => console.log(user))
+        .then(res => deleteTa(boy))
 })
 
 async function searchUser(userId) {
@@ -38,10 +37,14 @@ async function searchUser(userId) {
                                                     <br/>
                                                     <div class="modal-footer">
                                                         <button type="button" id="closeBtn" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                        <button type="submit"  onclick="document.location.reload()"  class="btn btn-danger" >Delete</button>
+                                                        <button type="submit"  onclick="closeModal();" class="btn btn-danger" >Delete</button>
                                                     </div>
                `;
             table.innerHTML = temp;
-
         })
+
+}
+
+function deleteTa(userId) {
+    document.getElementById('column'+userId).remove()
 }

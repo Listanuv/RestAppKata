@@ -19,6 +19,7 @@ const userFetch = {
             'Content-Type': 'application/json',
         }
     }),
+    findLastUser: async () => await fetch('api/users/lastuser',{method:'GET'}),
     checkCurrentUserRole: async ()=> await fetch('api/users/actuser',{method:'GET'}),
     findRoleById: async (roleId)=>await fetch('api/roles/'+roleId,{method:'GET'}),
     findOneUser: async (oneUserId)=>await fetch('api/users/'+oneUserId,{method:'GET'}),
@@ -42,5 +43,12 @@ const userFetch = {
             'Content-Type': 'application/json',
         }
     })
-}
 
+}
+function closeModal(){
+    $("[data-dismiss=modal]").trigger({ type: "click" });}
+
+function clearTable(){
+    const table = document.querySelector('#listUsers tbody');
+    table.innerHTML="";
+}

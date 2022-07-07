@@ -14,6 +14,8 @@ import ru.kata.spring.boot_security.demo.dao.RoleDAO;
 import ru.kata.spring.boot_security.demo.dao.UserDAO;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.service.RoleService;
+import ru.kata.spring.boot_security.demo.service.UserService;
 
 import java.util.Collections;
 import java.util.List;
@@ -22,11 +24,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class RestControllers {
-    private final UserDAO userDAO;
-    private final RoleDAO roleDAO;
+    private final UserService userDAO;
+    private final RoleService roleDAO;
 
     @Autowired
-    public RestControllers(UserDAO userDAO, RoleDAO roleDAO) {
+    public RestControllers(UserService userDAO, RoleService roleDAO) {
         this.userDAO = userDAO;
         this.roleDAO = roleDAO;
     }
@@ -74,5 +76,9 @@ public class RestControllers {
     @GetMapping("/users/actuser")
     public ResponseEntity<User> getCurrentUser() {
         return new ResponseEntity<>((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal(), HttpStatus.OK);
+    }
+    @GetMapping("/users/lastuser")
+    public ResponseEntity<User> getLastUser() {
+        return new ResponseEntity<>(userDAO.findFirstByOrderByIdDesc() , HttpStatus.OK);
     }
 }

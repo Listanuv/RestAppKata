@@ -6,7 +6,7 @@ async function getUsers() {
         .then(users => {
             users.forEach(user => {
                 temp += `
-                <tr>
+                <tr id="column${user.id}">
                     <td>${user.id}</td>
                     <td>${user.name}</td>
                     <td>${user.lastName}</td>
