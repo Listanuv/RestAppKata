@@ -71,6 +71,12 @@
     #userdiv {
         display: none;
     }
+    #listRole1{
+        width: 100%;
+    }
+    #listRole{
+        width: 100%;
+    }
 
 </style>
 
@@ -122,7 +128,6 @@
                                         <div class="modal-body">
                                             <form>
 
-
                                                 <label class="col-form-label" for="id">ID</label>
                                                 <input class="form-control" readonly type="number" id="id"
                                                        placeholder="ID">
@@ -146,12 +151,13 @@
                                                 <input class="form-control" type="text" id="password1"
                                                        placeholder="Password">
                                                 <br/>
+                                                <label class="col-form-label" for="listRole1">Role</label>
                                                 <div class="form-group">
-                                                    <label class="col-form-label" for="listRole1">Role</label>
-                                                    <select class="form-control" id="listRole1" name="listRole1">
-                                                        <option value="2">User</option>
+                                                    <select class="form-select" id="listRole1" multiple aria-label="пример множественного выбора">
+                                                        <option value="2" selected>User</option>
                                                         <option value="1">Admin</option>
                                                     </select>
+                                                    <div id="selection"></div>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" id="closeBtn" class="btn btn-secondary"
@@ -219,10 +225,11 @@
                             </div>
                             <div class="col-md-6 mb-3" id="test">
                                 <label class="col-form-label" for="listRole">Role</label>
-                                <select class="form-control sm-5 mb-2" id="listRole" name="listRole">
-                                    <option value="2">User</option>
-                                    <option value="1">Admin</option>
-                                </select>
+                                    <select class="form-select" id="listRole" multiple aria-label="пример множественного выбора">
+                                        <option value="2" selected>User</option>
+                                        <option value="1">Admin</option>
+                                    </select>
+
                             </div>
                             <div class="form-group mx-sm-5 mb-3">
                                 <button type="submit" onclick="listUsers()" class="btn-lg btn-success"

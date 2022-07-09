@@ -24,7 +24,7 @@ const userFetch = {
     findRoleById: async (roleId)=>await fetch('api/roles/'+roleId,{method:'GET'}),
     findOneUser: async (oneUserId)=>await fetch('api/users/'+oneUserId,{method:'GET'}),
     deleteUser: async (deleteId)=>await fetch('api/users/'+deleteId,{method:'DELETE'}),
-    createUser:async (nameValue,lastname,age,username,password,role)=>await fetch("api/users/", {
+    createUser:async (nameValue,lastname,age,username,password,roleArray)=>await fetch("api/users/", {
         method: 'POST',
         body: JSON.stringify({
             name: nameValue.value,
@@ -32,11 +32,7 @@ const userFetch = {
             age: age.value,
             username: username.value,
             password: password.value,
-            roles: [
-                {
-                    id:role.value,
-                }
-            ]
+            roles: roleArray
         }),
         headers: {
             Accept: 'application/json',

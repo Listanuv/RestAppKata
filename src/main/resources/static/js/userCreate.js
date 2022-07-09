@@ -6,8 +6,14 @@ addUser.addEventListener('submit', async (e) => {
     const age = document.getElementById('age')
     const username = document.getElementById('username')
     const password = document.getElementById('password')
-    const role=document.getElementById('listRole');
-    await userFetch.createUser(nameValue, lastname, age, username, password,role)
+    var values = $('#listRole').val();
+    var roleArray=[];
+    for (var i = 0; i < values.length; i++) {
+        await userFetch.findRoleById(values[i])
+            .then(resp => resp.json())
+            .then(role => roleArray.push(role))
+    }
+    await userFetch.createUser(nameValue, lastname, age, username, password,roleArray)
         .then(res => res.json())
     await userFetch.findLastUser().then(res => res.json()).then(user => console.log(user))
 })
@@ -17,6 +23,6 @@ async function listUsers() {
     // const table = document.querySelector('#listUsers tbody');
     // let temp = ``;
     // table.innerHTML=temp;
-    console.log("Hello");
-    setTimeout(() => {  getUsers() }, 100);
+1
+    setTimeout(() => {  getUsers() }, 200);
 }
